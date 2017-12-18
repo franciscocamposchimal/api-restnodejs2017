@@ -1,7 +1,9 @@
 'use strict'
 //modulos
 var fs = require('fs');
+
 var path = require('path');
+var mongoosePaginate = require('mongoose-pagination');
 
 //modelos
 var User = require('../models/user');
@@ -46,16 +48,23 @@ function saveAnimal(req, res) {
 }
 
 function getAnimals(req,res) {
-    Animal.find({}).populate({path: 'user'}).exec((err,animals) => {
-        if(err){
-            res.status(500).send({ message: 'Error en la peticion..' });
-        }else{
-            if(!animals){
-                res.status(404).send({ message: 'No hay animales..' });
-            }else{
-                res.status(200).send({ animals });
-            }
-        }
+    var  page= 1;
+    if(req.params.page){
+        page= req.params.page;
+    }
+
+    var  itemsPerPage = 15;
+
+    Animal.find().sort('_id').paginate(page,itemsPerPage, (err, animals, total) =>{
+        if(err) return res.status(500).send({message: 'Error en la petición...'});
+        
+        if(!animals) return res.status(404).send({message: 'No hay animales disponibles'});
+
+        return res.status(200).send({
+            animals,
+            total,
+            pages: Math.ceil(total/itemsPerPage)
+        });
     });
 }
 

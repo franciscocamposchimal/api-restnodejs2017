@@ -4,7 +4,7 @@
   "description": "Api RESTful mongo",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Franko Campos",
@@ -16,7 +16,8 @@
     "express": "^4.16.2",
     "jwt-simple": "^0.5.1",
     "moment": "^2.19.2",
-    "mongoose": "^4.13.2"
+    "mongoose": "^4.13.2",
+    "mongoose-pagination": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
